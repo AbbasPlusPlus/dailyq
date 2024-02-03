@@ -6,6 +6,7 @@ import {
   Routes,
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "../../contexts/AuthContext";
+import { GlobalStyle } from "../../styles/GlobalStyle.";
 import { Dashboard } from "../dashboard";
 import { ForgotPassword } from "../forgotPassword";
 import { Login } from "../login";
@@ -21,6 +22,7 @@ const PrivateWrapper = ({ children }) => {
 export function App() {
   return (
     <S.MainContainer>
+      <GlobalStyle />
       <S.ContentContainer>
         <Router>
           <AuthProvider>

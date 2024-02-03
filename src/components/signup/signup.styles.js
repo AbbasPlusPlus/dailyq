@@ -16,7 +16,7 @@ export const CardBody = styled.div`
   padding: 1rem;
 `;
 
-export const Title = styled.h2`
+export const Title = styled.h1`
   text-align: center;
   margin-bottom: 1rem;
 `;

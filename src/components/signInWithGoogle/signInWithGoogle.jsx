@@ -6,7 +6,7 @@ export const SignInWithGoogle = ({ signup }) => {
   const { signupWithGoogle } = useAuth();
 
   return (
-    <StyledButton onClick={signupWithGoogle} className="d-block">
+    <StyledButton onClick={signupWithGoogle} className="d-block mb-3">
       <GoogleIcon /> {`Sign ${signup ? "up" : "in"} with Google`}
     </StyledButton>
   );

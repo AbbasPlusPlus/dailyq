@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Alert, Button, FloatingLabel, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { SignInWithGoogle } from "../signInWithGoogle"; 
 import { OrSplitter } from "../orSplitter";
+import { SignInWithGoogle } from "../signInWithGoogle";
 import * as S from "./login.styles";
 
 export function Login() {
@@ -70,7 +70,7 @@ export function Login() {
               type="submit"
               size="lg"
               disabled={loading}
-              className="w-100 mb-3"
+              className="w-100"
             >
               Log In
             </Button>
