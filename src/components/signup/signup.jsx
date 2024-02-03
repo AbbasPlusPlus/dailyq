@@ -1,135 +1,176 @@
-import { doc, setDoc } from "firebase/firestore";
-import React, { useMemo, useRef, useState } from "react";
-import { Form } from "react-bootstrap";
+import { useFormik } from "formik";
+import React from "react";
+import { Alert, Button, FloatingLabel, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import Select from "react-select";
-import countryList from "react-select-country-list";
 import { useAuth } from "../../contexts/AuthContext";
-import { db } from "../../firebase";
+import { updateUserDocument } from "../../firebase/firestore";
+import { OrSplitter } from "../orSplitter";
+import { SignInWithGoogle } from "../signInWithGoogle";
+import { validationSchema } from "../utils/signup";
 import * as S from "./signup.styles";
 
 export function Signup() {
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [country, setCountry] = useState("");
-
-  const countryOptions = useMemo(() => countryList().getData(), []);
-
-  const changeCountryHandler = (value) => {
-    setCountry(value);
-  };
-
-  const { signup, signupWithGoogle } = useAuth();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { signup } = useAuth();
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    try {
-      setError("");
-      setLoading(true);
-      const userCredential = await signup(
-        emailRef.current.value,
-        passwordRef.current.value
-      );
-      const user = userCredential.user;
-      await setDoc(doc(db, "users", user.uid), {
-        firstName,
-        lastName,
-        country: country?.label,
-        email: emailRef.current.value,
-      });
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-      setError("Failed to create an account");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      country: "",
+    },
+    validationSchema,
+    onSubmit: async (values, { setErrors }) => {
+      const { email, password, firstName, lastName } = values;
+      try {
+        const userCredential = await signup(email, password);
+        const user = userCredential.user;
+        await updateUserDocument(user.uid, {
+          firstName,
+          lastName,
+          email,
+        });
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+        setErrors({ submit: "Failed to create an account. Please try again." });
+      }
+    },
+  });
 
   return (
     <>
       <S.Card>
         <S.CardBody>
           <S.Title>Sign Up</S.Title>
-          {error && <S.Alert>{error}</S.Alert>}
-          <Form onSubmit={handleSubmit}>
-            <Form.Group id="first-name">
-              <Form.Label>First Name</Form.Label>
+          {formik.errors.submit && (
+            <Alert variant="danger">{formik.errors.submit}</Alert>
+          )}
+          <Form onSubmit={formik.handleSubmit}>
+            <FloatingLabel
+              controlId="floatingFirstName"
+              label="First Name"
+              className="mb-3"
+            >
               <Form.Control
                 type="text"
-                required
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                name="firstName"
+                placeholder="First Name"
+                value={formik.values.firstName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                isInvalid={
+                  formik.touched.firstName && Boolean(formik.errors.firstName)
+                }
               />
-            </Form.Group>
-            <Form.Group id="last-name">
-              <Form.Label>Last Name</Form.Label>
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.firstName}
+              </Form.Control.Feedback>
+            </FloatingLabel>
+
+            <FloatingLabel
+              controlId="floatingLastName"
+              label="Last Name"
+              className="mb-3"
+            >
               <Form.Control
                 type="text"
-                required
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                name="lastName"
+                onBlur={formik.handleBlur}
+                placeholder="Last Name"
+                value={formik.values.lastName}
+                onChange={formik.handleChange}
+                isInvalid={
+                  formik.touched.lastName && Boolean(formik.errors.lastName)
+                }
               />
-            </Form.Group>
-            <Form.Group id="country">
-              <Form.Label>Country</Form.Label>
-              <Select
-                options={countryOptions}
-                value={country}
-                onChange={changeCountryHandler}
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.lastName}
+              </Form.Control.Feedback>
+            </FloatingLabel>
+            <FloatingLabel
+              controlId="floatingEmail"
+              label="Email"
+              className="mb-3"
+            >
+              <Form.Control
+                type="email"
+                name="email"
+                onBlur={formik.handleBlur}
+                placeholder="name@example.com"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                isInvalid={formik.touched.email && Boolean(formik.errors.email)}
               />
-            </Form.Group>
-            <Form.Group id="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
-            </Form.Group>
-            <Form.Group id="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" ref={passwordRef} required />
-            </Form.Group>
-            <Form.Group id="password-confirm">
-              <Form.Label>Password Confirmation</Form.Label>
-              <Form.Control type="password" ref={passwordConfirmRef} required />
-            </Form.Group>
-            <S.Button disabled={loading} type="submit">
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.email}
+              </Form.Control.Feedback>
+            </FloatingLabel>
+
+            <FloatingLabel
+              controlId="floatingPassword"
+              label="Password"
+              className="mb-3"
+            >
+              <Form.Control
+                type="password"
+                name="password"
+                onBlur={formik.handleBlur}
+                placeholder="Password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                isInvalid={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+              />
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.password}
+              </Form.Control.Feedback>
+            </FloatingLabel>
+
+            <FloatingLabel
+              controlId="floatingConfirmPassword"
+              label="Password Confirmation"
+              className="mb-3"
+            >
+              <Form.Control
+                type="password"
+                name="confirmPassword"
+                onBlur={formik.handleBlur}
+                placeholder="Confirm Password"
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
+                isInvalid={
+                  formik.touched.confirmPassword &&
+                  Boolean(formik.errors.confirmPassword)
+                }
+              />
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.confirmPassword}
+              </Form.Control.Feedback>
+            </FloatingLabel>
+
+            <Button
+              variant="primary"
+              type="submit"
+              size="lg"
+              disabled={formik.isSubmitting || !formik.isValid}
+              className="w-100"
+            >
               Sign Up
-            </S.Button>
+            </Button>
+
+            <OrSplitter />
+            <SignInWithGoogle signup={true} />
           </Form>
         </S.CardBody>
       </S.Card>
       <S.Container>
         Already have an account? <Link to="/login">Log In</Link>
       </S.Container>
-      <S.Button
-        disabled={loading}
-        onClick={async (e) => {
-          e.preventDefault();
-          try {
-            setError("");
-            setLoading(true);
-            await signupWithGoogle();
-            navigate("/");
-          } catch (error) {
-            console.error(error);
-            setError("Failed to sign up with Google");
-            setLoading(false);
-          }
-        }}
-      >
-        Sign Up with Google
-      </S.Button>
     </>
   );
 }

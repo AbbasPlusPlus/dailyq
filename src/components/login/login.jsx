@@ -1,12 +1,14 @@
-import React, { useRef, useState } from "react";
-import { Form } from "react-bootstrap";
+import React, { useState } from "react";
+import { Alert, Button, FloatingLabel, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { SignInWithGoogle } from "../signInWithGoogle"; 
+import { OrSplitter } from "../orSplitter";
 import * as S from "./login.styles";
 
 export function Login() {
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,40 +20,68 @@ export function Login() {
     try {
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
+      await login(email, password);
       navigate("/");
     } catch (error) {
       console.error(error);
-      setError("Failed to log in");
+      setError("Unable to log in. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return (
     <>
-      <S.StyledCard>
+      <S.Card>
         <S.CardBody>
           <S.Title>Log In</S.Title>
-          {error && <S.StyledAlert>{error}</S.StyledAlert>}
+          {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
-            <Form.Group id="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
-            </Form.Group>
-            <Form.Group id="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" ref={passwordRef} required />
-            </Form.Group>
-            <S.StyledButton disabled={loading} type="submit">
+            <FloatingLabel
+              controlId="floatingEmail"
+              label="Email"
+              className="mb-3"
+            >
+              <Form.Control
+                type="email"
+                placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </FloatingLabel>
+
+            <FloatingLabel
+              controlId="floatingPassword"
+              label="Password"
+              className="mb-3"
+            >
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </FloatingLabel>
+
+            <Button
+              variant="primary"
+              type="submit"
+              size="lg"
+              disabled={loading}
+              className="w-100 mb-3"
+            >
               Log In
-            </S.StyledButton>
+            </Button>
           </Form>
+          <OrSplitter />
+          <SignInWithGoogle />
           <S.Container>
             <Link to="/forgot-password">Forgot Password?</Link>
           </S.Container>
         </S.CardBody>
-      </S.StyledCard>
+      </S.Card>
       <S.Container>
         Need an account? <Link to="/signup">Sign Up</Link>
       </S.Container>

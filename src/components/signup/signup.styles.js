@@ -20,27 +20,3 @@ export const Title = styled.h2`
   text-align: center;
   margin-bottom: 1rem;
 `;
-
-export const Alert = styled.div`
-  background-color: #f8d7da;
-  color: #842029;
-  padding: 0.75rem 1.25rem;
-  margin-bottom: 1rem;
-  border: 1px solid transparent;
-  border-radius: 0.25rem;
-`;
-
-export const Button = styled.button`
-  width: 100%;
-  background-color: #007bff;
-  color: white;
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.25rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-top: 0.5rem;
-  &:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-`;

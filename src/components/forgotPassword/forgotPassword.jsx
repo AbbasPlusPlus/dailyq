@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
-import { Form } from "react-bootstrap";
+import React, { useState } from "react";
+import { Alert, Button, FloatingLabel, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import * as S from "./forgotPassword.styles";
 
 export function ForgotPassword() {
-  const emailRef = useRef();
+  const [email, setEmail] = useState("");
   const { resetPassword } = useAuth();
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -17,40 +18,53 @@ export function ForgotPassword() {
       setMessage("");
       setError("");
       setLoading(true);
-      await resetPassword(emailRef.current.value);
+      await resetPassword(email);
       setMessage("Check your inbox for further instructions");
     } catch {
       setError("Failed to reset password");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return (
     <>
-      <S.StyledCard>
+      <S.Card>
         <S.CardBody>
           <S.Title>Password Reset</S.Title>
-          {error && <S.StyledAlert variant="danger">{error}</S.StyledAlert>}
-          {message && (
-            <S.StyledAlert variant="success">{message}</S.StyledAlert>
-          )}
+          {error && <Alert variant="danger">{error}</Alert>}
+          {message && <Alert variant="success">{message}</Alert>}
           <Form onSubmit={handleSubmit}>
-            <Form.Group id="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
-            </Form.Group>
-            <S.StyledButton disabled={loading} type="submit">
+            <FloatingLabel
+              controlId="floatingEmail"
+              label="Email"
+              className="mb-3"
+            >
+              <Form.Control
+                type="email"
+                placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </FloatingLabel>
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={loading}
+              className="w-100"
+              size="lg"
+            >
               Reset Password
-            </S.StyledButton>
+            </Button>
           </Form>
           <S.Container>
-            <S.Link to="/login">Login</S.Link>
+            <Link to="/login">Login</Link>
           </S.Container>
         </S.CardBody>
-      </S.StyledCard>
+      </S.Card>
       <S.Container>
-        Need an account? <S.Link to="/signup">Sign Up</S.Link>
+        Need an account? <Link to="/signup">Sign Up</Link>
       </S.Container>
     </>
   );
