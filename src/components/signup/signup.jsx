@@ -25,7 +25,8 @@ export function Signup() {
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value);
       navigate("/");
-    } catch {
+    } catch (error) {
+      console.error(error);
       setError("Failed to create an account");
     }
 

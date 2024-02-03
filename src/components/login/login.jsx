@@ -20,7 +20,8 @@ export function Login() {
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
       navigate("/");
-    } catch {
+    } catch (error) {
+      console.error(error);
       setError("Failed to log in");
     }
 
