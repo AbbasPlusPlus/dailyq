@@ -1,17 +1,17 @@
 import React, { useRef, useState } from "react";
 import { Form } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import * as S from "./updateProfile.styles";
 
-export default function UpdateProfile() {
+export function UpdateProfile() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const { currentUser, updatePassword, updateEmail } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -32,7 +32,7 @@ export default function UpdateProfile() {
 
     Promise.all(promises)
       .then(() => {
-        history.push("/");
+        navigate("/");
       })
       .catch(() => {
         setError("Failed to update account");

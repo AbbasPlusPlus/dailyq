@@ -1,8 +1,8 @@
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
-import "firebase/auth";
+import { getAuth } from "firebase/auth";
 
-export const app = initializeApp({
+const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
@@ -10,7 +10,10 @@ export const app = initializeApp({
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
-});
+};
+
+export const app = initializeApp(firebaseConfig);
 
 export const analytics = getAnalytics(app);
-export const auth = app.auth();
+
+export const auth = getAuth(app);
