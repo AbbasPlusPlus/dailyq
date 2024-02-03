@@ -8,7 +8,7 @@ export function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { signup } = useAuth();
+  const { signup, signupWithGoogle } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -61,6 +61,24 @@ export function Signup() {
       <S.Container>
         Already have an account? <Link to="/login">Log In</Link>
       </S.Container>
+      <S.Button
+        disabled={loading}
+        onClick={async (e) => {
+          e.preventDefault();
+          try {
+            setError("");
+            setLoading(true);
+            await signupWithGoogle();
+            navigate("/");
+          } catch (error) {
+            console.error(error);
+            setError("Failed to sign up with Google");
+            setLoading(false);
+          }
+        }}
+      >
+        Sign Up with Google
+      </S.Button>
     </>
   );
 }

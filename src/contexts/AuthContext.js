@@ -1,10 +1,12 @@
 import {
+  GoogleAuthProvider,
   createUserWithEmailAndPassword,
   updateEmail as firebaseUpdateEmail,
   updatePassword as firebaseUpdatePassword,
   onAuthStateChanged,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
 } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
@@ -46,6 +48,11 @@ export function AuthProvider({ children }) {
     return firebaseUpdatePassword(currentUser, password);
   }
 
+  function signupWithGoogle() {
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(auth, provider);
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -63,6 +70,7 @@ export function AuthProvider({ children }) {
     resetPassword,
     updateEmail,
     updatePassword,
+    signupWithGoogle,
   };
 
   return (
