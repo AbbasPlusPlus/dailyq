@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "../../contexts/AuthContext";
 import { GlobalStyle } from "../../styles/GlobalStyle.";
+import { AdminPage } from "../adminPage";
 import { Dashboard } from "../dashboard";
 import { ForgotPassword } from "../forgotPassword";
 import { Login } from "../login";
@@ -46,6 +47,14 @@ export function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route
+                path="/admin"
+                element={
+                  <PrivateWrapper>
+                    <AdminPage />
+                  </PrivateWrapper>
+                }
+              />
             </Routes>
           </AuthProvider>
         </Router>
