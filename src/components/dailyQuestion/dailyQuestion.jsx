@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Alert, ProgressBar } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import {
   fetchAnswersForQuestion,
   saveUserAnswer,
 } from "../../firebase/firestore";
 import { useDailyQuestion } from "../../hooks/useDailyQuestion";
+import { AnswerButton } from "../answerButton";
 import * as S from "./dailyQuestion.styles";
 
 export const DailyQuestion = () => {
   const question = useDailyQuestion();
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [freeResponse, setFreeResponse] = useState("");
+  const [savedFreeResponse, setSavedFreeResponse] = useState("");
   const [hasAnswered, setHasAnswered] = useState(false);
   const [answerFrequencies, setAnswerFrequencies] = useState({});
   const [totalAnswers, setTotalAnswers] = useState(0);
@@ -21,7 +23,17 @@ export const DailyQuestion = () => {
     const answeredToken = localStorage.getItem(
       `answered_${currentUser?.uid}_${question?.id}`
     );
+    const savedAnswer = localStorage.getItem(
+      `selectedAnswer_${currentUser?.uid}_${question?.id}`
+    );
+    const freeResponse = localStorage.getItem(
+      `freeResponse_${currentUser?.uid}_${question?.id}`
+    );
+
     setHasAnswered(!!answeredToken);
+    setSelectedAnswer(savedAnswer || null);
+    setSavedFreeResponse(freeResponse || "");
+
     if (answeredToken) {
       processAndDisplayAnswerFrequencies(question.id);
     }
@@ -66,7 +78,16 @@ export const DailyQuestion = () => {
             `answered_${currentUser?.uid}_${question.id}`,
             "answered"
           );
+          localStorage.setItem(
+            `selectedAnswer_${currentUser?.uid}_${question.id}`,
+            selectedAnswer
+          );
+          localStorage.setItem(
+            `freeResponse_${currentUser?.uid}_${question.id}`,
+            freeResponse
+          );
           setHasAnswered(true);
+          setSavedFreeResponse(freeResponse);
           processAndDisplayAnswerFrequencies(question.id);
         }
       } catch (error) {
@@ -90,40 +111,34 @@ export const DailyQuestion = () => {
             const percentage =
               totalAnswers > 0 ? (frequency / totalAnswers) * 100 : 0;
 
-            return hasAnswered ? (
-              <S.AnswerProgress variant="secondary">
-                <ProgressBar
-                  now={percentage}
-                  label={`${frequency} vote`}
-                  striped={selectedAnswer === answer}
-                  variant={selectedAnswer === answer ? "primary" : "secondary"}
-                />
-              </S.AnswerProgress>
-            ) : (
-              <S.AnswerButton
-                variant="outline-primary"
+            return (
+              <AnswerButton
                 key={index}
-                onClick={() => setSelectedAnswer(answer)}
-                active={selectedAnswer === answer}
-              >
-                {answer}
-              </S.AnswerButton>
+                text={answer}
+                isSelected={selectedAnswer === answer}
+                percentage={hasAnswered ? percentage : 0}
+                onClick={() => !hasAnswered && setSelectedAnswer(answer)}
+              />
             );
           })}
         </S.AnswerList>
-        {question.allowFreeResponse && (
-          <>
+        {question.allowFreeResponse &&
+          (hasAnswered ? (
+            savedFreeResponse && (
+              <S.ResponseDisplay>{savedFreeResponse}</S.ResponseDisplay>
+            )
+          ) : (
             <S.FreeResponseInput
               as="textarea"
               rows={3}
-              maxLength="250"
+              maxLength={250} // Use curly braces for numeric values
               placeholder="Additional comments"
               value={freeResponse}
               onChange={(e) => setFreeResponse(e.target.value)}
             />
-            <S.SubmitButton type="submit">Submit</S.SubmitButton>
-          </>
-        )}
+          ))}
+
+        {!hasAnswered && <S.SubmitButton type="submit">Submit</S.SubmitButton>}
       </S.QuestionContainer>
     </>
   );

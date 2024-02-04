@@ -20,11 +20,6 @@ export const AnswerList = styled.div`
   width: 100%;
 `;
 
-export const AnswerButton = styled(Button)`
-  margin: 5px;
-  width: 100%;
-`;
-
 export const FreeResponseInput = styled(FormControl)`
   margin-top: 10px;
   width: 100%;
@@ -38,10 +33,10 @@ export const SubmitButton = styled(Button)`
   width: 100%;
 `;
 
-export const AnswerProgress = styled.div`
-  margin-bottom: 10px;
-  width: 100%;
-  .progress-bar {
-    transition: width 0.6s ease;
-  }
+export const ResponseDisplay = styled.div`
+  background-color: #f7f7f7;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 10px;
 `;
