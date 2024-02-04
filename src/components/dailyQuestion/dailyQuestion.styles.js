@@ -37,3 +37,11 @@ export const SubmitButton = styled(Button)`
   margin-left: 10px;
   width: 100%;
 `;
+
+export const AnswerProgress = styled.div`
+  margin-bottom: 10px;
+  width: 100%;
+  .progress-bar {
+    transition: width 0.6s ease;
+  }
+`;

@@ -101,3 +101,14 @@ export const saveUserAnswer = async ({
 
   return docRef.id;
 };
+
+export const fetchAnswersForQuestion = async (questionId) => {
+  const answersQuery = query(
+    collection(db, "answers"),
+    where("questionId", "==", questionId)
+  );
+
+  const querySnapshot = await getDocs(answersQuery);
+  return querySnapshot.docs.map((doc) => doc.data());
+};
+

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCheck, FaPlus, FaTimes, FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import { saveQuestion } from "../../firebase/firestore";
 import * as S from "./adminPage.styles";
 
@@ -13,6 +15,14 @@ export function AdminPage() {
   const [activateAt, setActivateAt] = useState(new Date());
   const [validationError, setValidationError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!currentUser?.isAdmin) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
 
   const handleQuestionChange = (e) => {
     setQuestion(e.target.value);
@@ -66,7 +76,7 @@ export function AdminPage() {
   };
 
   const validateForm = () => {
-    setValidationError(""); // Reset validation error before checking
+    setValidationError("");
     if (!question.trim()) {
       setValidationError("Please enter a question.");
       return false;
@@ -77,6 +87,13 @@ export function AdminPage() {
     }
     if (answers.length < 2) {
       setValidationError("Please provide at least two answers.");
+      return false;
+    }
+    const uniqueAnswers = new Set(
+      answers.map((answer) => answer.trim().toLowerCase())
+    );
+    if (uniqueAnswers.size !== answers.length) {
+      setValidationError("All answer options must be unique.");
       return false;
     }
     return true;
