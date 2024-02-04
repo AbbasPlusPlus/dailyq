@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-bootstrap"; // Import Bootstrap Alert component
+import { Alert } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import { saveUserAnswer } from "../../firebase/firestore";
 import { useDailyQuestion } from "../../hooks/useDailyQuestion";
@@ -53,7 +53,7 @@ export const DailyQuestion = () => {
   return (
     <>
       {hasAnswered && (
-        <Alert variant="info">You have already answered this question.</Alert>
+        <Alert variant="info">You have answered this question.</Alert>
       )}
       <S.QuestionContainer as="form" onSubmit={handleSubmit}>
         <S.QuestionHeader>{question.question}</S.QuestionHeader>

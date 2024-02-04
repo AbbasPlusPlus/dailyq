@@ -28,14 +28,7 @@ export function App() {
         <Router>
           <AuthProvider>
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <PrivateWrapper>
-                    <Dashboard />
-                  </PrivateWrapper>
-                }
-              />
+              <Route path="/" element={<Dashboard />} />
               <Route
                 path="/update-profile"
                 element={
