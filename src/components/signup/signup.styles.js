@@ -7,7 +7,7 @@ export const Container = styled.div`
 `;
 
 export const Card = styled.div`
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
   padding: 1rem;
 `;

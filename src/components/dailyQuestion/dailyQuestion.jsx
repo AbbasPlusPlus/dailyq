@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import {
   fetchAnswersForQuestion,
@@ -18,6 +19,7 @@ export const DailyQuestion = () => {
   const [answerFrequencies, setAnswerFrequencies] = useState({});
   const [totalAnswers, setTotalAnswers] = useState(0);
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const answeredToken = localStorage.getItem(
@@ -39,10 +41,6 @@ export const DailyQuestion = () => {
     }
   }, [currentUser, question]);
 
-  if (!question) {
-    return <div>Loading question...</div>;
-  }
-
   const processAndDisplayAnswerFrequencies = async (questionId) => {
     try {
       const answers = await fetchAnswersForQuestion(questionId);
@@ -51,8 +49,7 @@ export const DailyQuestion = () => {
         return acc;
       }, {});
 
-      const total = answers.length;
-      setTotalAnswers(total);
+      setTotalAnswers(answers.length);
       setAnswerFrequencies(frequency);
     } catch (error) {
       console.error("Error fetching answers: ", error);
@@ -96,6 +93,10 @@ export const DailyQuestion = () => {
     }
   };
 
+  if (!question) {
+    return <div>Loading question...</div>;
+  }
+
   return (
     <>
       {hasAnswered && (
@@ -131,14 +132,29 @@ export const DailyQuestion = () => {
             <S.FreeResponseInput
               as="textarea"
               rows={3}
-              maxLength={250} // Use curly braces for numeric values
+              maxLength={250}
               placeholder="Additional comments"
               value={freeResponse}
               onChange={(e) => setFreeResponse(e.target.value)}
             />
           ))}
-
         {!hasAnswered && <S.SubmitButton type="submit">Submit</S.SubmitButton>}
+
+        {hasAnswered && !currentUser && (
+          <S.AuthButtonContainer>
+            <p>Please login or signup to see how other users answered.</p>
+            <Button
+              variant="primary"
+              className="mx-3"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </Button>
+            <Button variant="secondary" onClick={() => navigate("/signup")}>
+              Signup
+            </Button>
+          </S.AuthButtonContainer>
+        )}
       </S.QuestionContainer>
     </>
   );

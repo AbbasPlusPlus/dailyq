@@ -40,3 +40,12 @@ export const ResponseDisplay = styled.div`
   border-radius: 4px;
   margin-top: 10px;
 `;
+
+export const AuthButtonContainer = styled.div`
+  margin-top: 16px;
+  justify-content: space-between;
+
+  & > button {
+    width: 40%;
+  }
+`;
