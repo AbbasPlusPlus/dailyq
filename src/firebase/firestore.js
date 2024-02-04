@@ -52,7 +52,7 @@ export const fetchQuestion = async () => {
     collection(db, "questions"),
     where("activateAt", ">=", todayStart),
     where("activateAt", "<=", todayEnd),
-    orderBy("activateAt"),
+    orderBy("activateAt", "desc"),
     limit(1)
   );
 
@@ -111,4 +111,3 @@ export const fetchAnswersForQuestion = async (questionId) => {
   const querySnapshot = await getDocs(answersQuery);
   return querySnapshot.docs.map((doc) => doc.data());
 };
-
