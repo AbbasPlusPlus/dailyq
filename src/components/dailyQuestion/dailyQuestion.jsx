@@ -79,7 +79,7 @@ export const DailyQuestion = () => {
     <>
       {hasAnswered && (
         <Alert variant="info">
-          You have answered this question. Come back tomorrow for the next one.
+          Thank you for your input! Come back tomorrow for the next question.
         </Alert>
       )}
       <S.QuestionContainer as="form" onSubmit={handleSubmit}>

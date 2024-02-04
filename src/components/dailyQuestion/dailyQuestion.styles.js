@@ -33,7 +33,7 @@ export const FreeResponseInput = styled(FormControl)`
 `;
 
 export const SubmitButton = styled(Button)`
-  margin-top: 10px;
+  margin-top: 20px;
   margin-left: 10px;
   width: 100%;
 `;

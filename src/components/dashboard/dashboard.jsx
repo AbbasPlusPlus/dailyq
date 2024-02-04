@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Dropdown, Nav, Navbar } from "react-bootstrap";
-import { FiSettings } from "react-icons/fi";
+import { Nav, Navbar } from "react-bootstrap";
+import { IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { DailyQuestion } from "../dailyQuestion";
@@ -28,21 +28,14 @@ export function Dashboard() {
       <Navbar expand="lg" className="justify-content-end">
         {currentUser && (
           <Nav>
-            <Dropdown align="end">
-              <Dropdown.Toggle variant="success" id="dropdown-settings">
-                <FiSettings />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => navigate("/update-profile")}>
-                  Update Profile
-                </Dropdown.Item>
-                <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <Nav.Link onClick={handleLogout}>
+              <IoLogOutOutline size="26" />
+            </Nav.Link>
           </Nav>
         )}
       </Navbar>
       <DailyQuestion />
+      {error && <div style={{ color: "red" }}>{error}</div>}
     </S.Card>
   );
 }
