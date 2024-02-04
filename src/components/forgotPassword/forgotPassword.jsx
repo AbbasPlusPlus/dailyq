@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import { Alert, Button, FloatingLabel, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {
+  Alert,
+  Button,
+  FloatingLabel,
+  Form,
+  Nav,
+  Navbar,
+} from "react-bootstrap";
+import { IoHomeOutline } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import * as S from "./forgotPassword.styles";
 
@@ -10,6 +18,7 @@ export function ForgotPassword() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -30,6 +39,13 @@ export function ForgotPassword() {
   return (
     <>
       <S.Card>
+        <Navbar expand="lg" className="justify-content-end">
+          <Nav>
+            <Nav.Link onClick={() => navigate("/")}>
+              <IoHomeOutline size="26" />
+            </Nav.Link>
+          </Nav>
+        </Navbar>
         <S.CardBody>
           <S.Title>Password Reset</S.Title>
           {error && <Alert variant="danger">{error}</Alert>}
