@@ -28,9 +28,12 @@ export const AnswerButton = styled(Button)`
 export const FreeResponseInput = styled(FormControl)`
   margin-top: 10px;
   width: 100%;
+  margin-left: 10px;
+  border-radius: 4px;
 `;
 
 export const SubmitButton = styled(Button)`
   margin-top: 10px;
+  margin-left: 10px;
   width: 100%;
 `;
