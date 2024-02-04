@@ -65,7 +65,6 @@ export function AuthProvider({ children }) {
             email: user.email,
             ...userSnap.data(),
           };
-          console.log("User data found in Firestore", userData);
           setCurrentUser(userData);
         } else {
           console.log("User data not found in Firestore");
