@@ -7,8 +7,13 @@ export const AnswerButton = ({ text, percentage, isSelected, ...props }) => {
 
   return (
     <S.AnswerButtonContainer isSelected={isSelected} {...props}>
-      {currentUser && <S.PercentageBar percentage={percentage} />}
-      <S.AnswerText>{text}</S.AnswerText>
+      <S.TextAndIconContainer>
+        <S.AnswerText>{text}</S.AnswerText>
+        {isSelected && <S.SelectedIcon />}
+      </S.TextAndIconContainer>
+      {currentUser && (
+        <S.PercentageBar percentage={percentage} isSelected={isSelected} />
+      )}
       {currentUser && percentage > 0 && (
         <S.PercentageText>{`${percentage.toFixed(0)}%`}</S.PercentageText>
       )}

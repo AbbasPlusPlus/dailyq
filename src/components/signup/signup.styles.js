@@ -23,3 +23,12 @@ export const Title = styled.h1`
   margin-bottom: 1rem;
   background-color: white;
 `;
+
+export const Logo = styled.img`
+  height: 150px;
+`;
+
+export const LogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;

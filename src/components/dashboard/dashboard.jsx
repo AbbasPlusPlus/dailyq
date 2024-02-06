@@ -39,6 +39,9 @@ export function Dashboard() {
 
   return (
     <S.Card>
+      <S.LogoWrapper onClick={() => navigate("/")}>
+        <S.Logo src="/logo.png" alt="Logo" style={{ cursor: "pointer" }} />
+      </S.LogoWrapper>
       <Navbar expand="lg">
         <S.StyledNav>
           <S.IconWrapper>

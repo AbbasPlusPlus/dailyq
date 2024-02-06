@@ -1,14 +1,6 @@
 import { useFormik } from "formik";
 import React from "react";
-import {
-  Alert,
-  Button,
-  FloatingLabel,
-  Form,
-  Nav,
-  Navbar,
-} from "react-bootstrap";
-import { IoHomeOutline } from "react-icons/io5";
+import { Alert, Button, FloatingLabel, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { updateUserDocument } from "../../firebase/firestore";
@@ -52,13 +44,9 @@ export function Signup() {
   return (
     <>
       <S.Card>
-        <Navbar expand="lg" className="justify-content-end">
-          <Nav>
-            <Nav.Link onClick={() => navigate("/")}>
-              <IoHomeOutline size="26" />
-            </Nav.Link>
-          </Nav>
-        </Navbar>
+        <S.LogoWrapper onClick={() => navigate("/")}>
+          <S.Logo src="/logo.png" alt="Logo" style={{ cursor: "pointer" }} />
+        </S.LogoWrapper>
         <S.CardBody>
           <S.Title>Sign Up</S.Title>
           {formik.errors.submit && (

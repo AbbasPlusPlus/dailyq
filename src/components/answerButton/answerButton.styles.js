@@ -1,10 +1,10 @@
+import { FaCheckCircle } from "react-icons/fa";
 import styled from "styled-components";
 
 export const AnswerButtonContainer = styled.div`
   margin: 10px 0;
   padding: 10px;
-  border: ${({ isSelected }) =>
-    isSelected ? "5px solid DodgerBlue" : "1px solid #ccc"};
+  border: 1px solid #ccc;
   border-radius: 4px;
   position: relative;
   display: flex;
@@ -13,8 +13,14 @@ export const AnswerButtonContainer = styled.div`
   user-select: none;
 `;
 
-export const AnswerText = styled.span`
+export const TextAndIconContainer = styled.div`
+  display: flex;
+  align-items: center;
   z-index: 1;
+`;
+
+export const AnswerText = styled.span`
+  margin-right: 5px;
 `;
 
 export const PercentageBar = styled.div`
@@ -23,7 +29,7 @@ export const PercentageBar = styled.div`
   left: 0;
   bottom: 0;
   width: ${({ percentage }) => percentage}%;
-  background-color: DeepSkyBlue;
+  background-color: ${({ isSelected }) => (isSelected ? "#e4f0fe" : "#ebebeb")};
   transition: width 0.3s ease-in-out;
 `;
 
@@ -32,4 +38,10 @@ export const PercentageText = styled.span`
   right: 10px;
   z-index: 1;
   color: black;
+`;
+
+export const SelectedIcon = styled(FaCheckCircle)`
+  color: dimgray;
+  font-size: 20px;
+  margin: 0 0 2px 8px;
 `;

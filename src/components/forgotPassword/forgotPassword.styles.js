@@ -22,3 +22,12 @@ export const Title = styled.h2`
   text-align: center;
   margin-bottom: 1rem;
 `;
+
+export const Logo = styled.img`
+  height: 150px;
+`;
+
+export const LogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;

@@ -21,3 +21,12 @@ export const StyledNav = styled(Nav)`
   width: 100%;
   margin-bottom: 1rem;
 `;
+
+export const Logo = styled.img`
+  height: 150px;
+`;
+
+export const LogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
