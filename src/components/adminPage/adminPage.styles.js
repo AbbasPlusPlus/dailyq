@@ -4,6 +4,10 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
 `;
 
 export const Button = styled.button`

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Nav, Navbar } from "react-bootstrap";
+import { Alert, Nav, Navbar } from "react-bootstrap";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import {
@@ -66,7 +66,7 @@ export function Dashboard() {
         </S.StyledNav>
       </Navbar>
       <DailyQuestion />
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      {error && <Alert variant="danger">{error}</Alert>}
     </S.Card>
   );
 }

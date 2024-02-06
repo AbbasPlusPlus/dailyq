@@ -7,9 +7,11 @@ export const Container = styled.div`
 `;
 
 export const Card = styled.div`
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   margin-bottom: 1rem;
   padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
 `;
 
 export const CardBody = styled.div`
@@ -19,4 +21,5 @@ export const CardBody = styled.div`
 export const Title = styled.h1`
   text-align: center;
   margin-bottom: 1rem;
+  background-color: white;
 `;
