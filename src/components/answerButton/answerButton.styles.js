@@ -1,5 +1,5 @@
 import { FaCheckCircle } from "react-icons/fa";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const AnswerButtonContainer = styled.div`
   margin: 10px 0;
@@ -44,4 +44,25 @@ export const SelectedIcon = styled(FaCheckCircle)`
   color: dimgray;
   font-size: 20px;
   margin: 0 0 2px 8px;
+`;
+
+const sparkleAnimation = keyframes`
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+`;
+
+export const Sparkle = styled.div`
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: magenta;
+  animation: ${sparkleAnimation} 0.7s ease-out forwards;
+  pointer-events: none;
 `;
