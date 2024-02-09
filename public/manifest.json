@@ -1,5 +1,6 @@
 {
-  "name": "DailyQ",
+  "short_name": "DailyQ",
+  "name": "DailyQ: Daily Questions for Everyone",
   "icons": [
     {
       "src": "favicon.ico",
@@ -17,8 +18,12 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "orientation": "portrait",
+  "scope": "/",
+  "description": "Get your daily dose of questions to keep your mind sharp!",
+  "categories": ["education", "productivity", "lifestyle"],
+  "theme_color": "#4A90E2",
+  "background_color": "#FFFFFF"
 }
